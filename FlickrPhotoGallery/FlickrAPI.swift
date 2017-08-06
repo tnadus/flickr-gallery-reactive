@@ -46,11 +46,15 @@ class FlickrAPI {
                 for feed in feeds {
                     
                     let flickr = FlickrData()
-                    flickr.author = feed["author"] as? String
-                    flickr.published = feed["published"] as? String
-                    flickr.imgUrlString = feed["media.m"] as? String
+                    
+                    let authorRaw = feed["author"] as? String
+                    let autorModified = authorRaw?.replacingOccurrences(of: "\"", with: "")
+                    let rangeStart = autorModified?.range(of: "(")
+                    let rangeEnd = autorModified?.range(of: ")", options: String.CompareOptions.backwards)
+                    flickr.author = autorModified?[(rangeStart?.upperBound)!..<(rangeEnd?.lowerBound)!]
+                    
+                    flickr.imgUrlString = (feed["media"] as? Dictionary)?["m"]
                     flickr.title = feed["title"] as? String
-                    flickr.desc = feed["description"] as? String
                     
                     flickrItems.append(flickr)
                 }

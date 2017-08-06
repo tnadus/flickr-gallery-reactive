@@ -13,43 +13,36 @@ class FlickrViewModel {
     
     let title = "Flickr Photo Gallery"
     let insetCollectionView = UIEdgeInsetsMake(0.0, 12.0, 0.0, 12.0)
+    let cache = NSCache<AnyObject, AnyObject>()
     
     var datas = Variable<[FlickrData]>([])
     
     init() {
-        print("viewmodel is initialized")
         FlickrAPI.fetchData { (fetchedData) in
             if let fData = fetchedData {
                 self.datas.value = fData
             }
         }
     }
-}
-
-
-func fetchImage(urlString: String) {
     
-    guard let url = URL(string: urlString) else {
-        return
-    }
-    
-    let urlsession = URLSession(configuration: URLSessionConfiguration.default)
-    let task = urlsession.dataTask(with: url) { (data, res, error) in
+    func loadImage(urlString: String, completion: @escaping (UIImage?) -> Void) {
         
-        if error != nil || (res as! HTTPURLResponse).statusCode != 200 || data == nil {
-            print(error ?? "error when trying to fetch image url")
+        if let img = cache.object(forKey: urlString as AnyObject) as? UIImage {
+            completion(img)
             return
         }
         
-         let img = UIImage(data: data!)
-        
-        
+        ImageLoader.load(urlString: urlString) { data in
+         
+            if let dataImg = data {
+                let img = UIImage(data: dataImg)
+                self.cache.setObject(img!, forKey: urlString as AnyObject)
+                completion(img)
+            }
+        }
     }
-    
-    task.resume()
-    
-    
 }
+
 
 
 

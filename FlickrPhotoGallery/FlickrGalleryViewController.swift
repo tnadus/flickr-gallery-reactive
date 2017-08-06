@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ViewController: UIViewController, UICollectionViewDelegateFlowLayout {
+class FlickrGalleryViewController: UIViewController, UICollectionViewDelegateFlowLayout {
 
     let cellId = "cellId"
     
@@ -22,7 +22,7 @@ class ViewController: UIViewController, UICollectionViewDelegateFlowLayout {
         flowLayout.scrollDirection = .vertical
         let cv = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.backgroundColor = .lightGray
+        cv.backgroundColor = .white
         return cv
     }()
     
@@ -54,11 +54,33 @@ class ViewController: UIViewController, UICollectionViewDelegateFlowLayout {
         flickrModelView.datas.asObservable().filter({ datas -> Bool in
             return datas.count > 0
         })
-            .bind(to: collectionView.rx.items) {[unowned self] (collectionView, row, element) in
-            let indexPath = IndexPath(row: row, section: 0)
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.cellId, for: indexPath) as! FlickrCell
-            cell.data = self.flickrModelView.datas.value[indexPath.row]
-            return cell
+            .bind(to: collectionView.rx.items) {[unowned self] (collectionView, row, data) in
+                let indexPath = IndexPath(row: row, section: 0)
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.cellId, for: indexPath) as! FlickrCell
+                
+                cell.photoImgView.image = UIImage(named: "")
+                
+                if let artistName = data.author {
+                    cell.artistLabel.text = artistName
+                }
+                
+                if let titleName = data.title {
+                    cell.titleLabel.text = titleName
+                }
+                
+                if let urlStr = data.imgUrlString {
+                    cell.urlString = urlStr
+                    
+                    self.flickrModelView.loadImage(urlString: urlStr, completion: { img in
+                        if let image = img {
+                            if cell.urlString == urlStr {
+                                cell.photoImgView.image = image
+                            }
+                        }
+                    })
+                    
+                }
+                return cell
             }
             .disposed(by: disposeBag)
         

@@ -10,27 +10,13 @@ import UIKit
 
 class FlickrCell: UICollectionViewCell {
     
-    var data: FlickrData? {
-        didSet {
-            
-            photoImgView.image = UIImage(named: "")
-            
-            guard let artistName = data?.author else {
-                return
-            }
-            artistLabel.text = artistName
-            
-            guard let titleName = data?.title  else {
-                return
-            }
-            
-            titleLabel.text = titleName
-        }
-    }
-    
+    var urlString = ""
+        
     let photoImgView: UIImageView = {
         let iv = UIImageView(frame: .zero)
-        iv.backgroundColor = .blue
+        iv.backgroundColor = .black
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
@@ -38,16 +24,17 @@ class FlickrCell: UICollectionViewCell {
     let artistLabel: UILabel = {
         let l = UILabel(frame: .zero)
         l.translatesAutoresizingMaskIntoConstraints = false
-        l.backgroundColor = .green
-        l.text = "Murat"
+        l.backgroundColor = UIColor(white: 0.3, alpha: 0.7)
+        l.textColor = .white
+        
         return l
     }()
     
     let titleLabel: UILabel = {
         let l = UILabel(frame: .zero)
         l.translatesAutoresizingMaskIntoConstraints = false
-        l.backgroundColor = .red
-        l.text = "Ankara"
+        l.backgroundColor = UIColor(white: 0.3, alpha: 0.7)
+        l.textColor = .white
         return l
     }()
     

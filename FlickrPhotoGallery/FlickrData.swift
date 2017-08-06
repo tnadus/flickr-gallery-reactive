@@ -12,12 +12,7 @@ import Foundation
 class FlickrData {
     
     var title: String?
-    var link: String?
     var imgUrlString : String?
-    var dateString : String?
-    var desc : String?
-    var published: String?
     var author : String?
-    var authorId: String?
-    var tags: String?
+    
 }
