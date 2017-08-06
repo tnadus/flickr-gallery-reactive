@@ -7,19 +7,20 @@
 //
 
 import UIKit
-
+import RxSwift
 
 class FlickrViewModel {
     
     let title = "Flickr Photo Gallery"
     let insetCollectionView = UIEdgeInsetsMake(0.0, 12.0, 0.0, 12.0)
-    var datas = [FlickrData]()
+    
+    var datas = Variable<[FlickrData]>([])
     
     init() {
         print("viewmodel is initialized")
         FlickrAPI.fetchData { (fetchedData) in
             if let fData = fetchedData {
-                self.datas = fData
+                self.datas.value = fData
             }
         }
     }

@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UICollectionViewDelegateFlowLayout {
 
     let cellId = "cellId"
     
     let flickrModelView = FlickrViewModel()
+    let disposeBag = DisposeBag()
 
     let collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -28,6 +31,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         setupViews()
+        setupBindings()
     }
     
     func setupViews() {
@@ -38,14 +42,33 @@ class ViewController: UIViewController {
     func setupCollectionView() {
         self.view.addSubview(collectionView)
         
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        
         collectionView.register(FlickrCell.self, forCellWithReuseIdentifier: cellId)
         
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[cv]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["cv": collectionView]))
         
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[cv]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["cv": collectionView]))
+    }
+    
+    func setupBindings() {
+        
+        flickrModelView.datas.asObservable().filter({ datas -> Bool in
+            return datas.count > 0
+        })
+            .bind(to: collectionView.rx.items) {[unowned self] (collectionView, row, element) in
+            let indexPath = IndexPath(row: row, section: 0)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.cellId, for: indexPath) as! FlickrCell
+            cell.data = self.flickrModelView.datas.value[indexPath.row]
+            return cell
+            }
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.setDelegate(self).addDisposableTo(disposeBag)
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let size = CGSize(width: self.view.frame.width - flickrModelView.insetCollectionView.left - flickrModelView.insetCollectionView.right, height: 240.0)
+        return size
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,32 +76,4 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-}
-
-extension ViewController: UICollectionViewDataSource {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        return flickrModelView.datas.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! FlickrCell
-        cell.data = flickrModelView.datas[indexPath.row]
-        return cell
-    }
-}
-
-
-extension ViewController: UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return flickrModelView.insetCollectionView
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = CGSize(width: self.view.frame.width - flickrModelView.insetCollectionView.left - flickrModelView.insetCollectionView.right, height: 240.0)
-        return size
-    }
-    
 }
