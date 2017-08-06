@@ -1,6 +1,6 @@
 //
-//  FlickerCell.swift
-//  FlickerPhotoGallery
+//  FlickrCell.swift
+//  FlickrPhotoGallery
 //
 //  Created by Murat Sudan on 06/08/2017.
 //  Copyright © 2017 Murat Sudan. All rights reserved.
@@ -8,15 +8,12 @@
 
 import UIKit
 
-class FlickerCell: UICollectionViewCell {
+class FlickrCell: UICollectionViewCell {
     
-    var data: FlickerData? {
+    var data: FlickrData? {
         didSet {
             
-            guard let imgName = data?.imgName else {
-                return
-            }
-            photoImgView.image = UIImage(named: imgName)
+            photoImgView.image = UIImage(named: "")
             
             guard let artistName = data?.author else {
                 return

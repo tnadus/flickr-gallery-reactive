@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  FlickerPhotoGallery
+//  FlickrPhotoGallery
 //
 //  Created by Murat Sudan on 06/08/2017.
 //  Copyright © 2017 Murat Sudan. All rights reserved.
@@ -10,12 +10,10 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let insetCollectionView = UIEdgeInsetsMake(0.0, 12.0, 0.0, 12.0)
-    
     let cellId = "cellId"
     
-    let flickerModelView = FlickerViewModel()
-    
+    let flickrModelView = FlickrViewModel()
+
     let collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
@@ -29,12 +27,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
         setupViews()
-        title = "Flicker Photo Gallery"
     }
     
     func setupViews() {
+        title = flickrModelView.title
         setupCollectionView()
     }
     
@@ -44,7 +41,7 @@ class ViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         
-        collectionView.register(FlickerCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(FlickrCell.self, forCellWithReuseIdentifier: cellId)
         
         self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[cv]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["cv": collectionView]))
         
@@ -61,12 +58,13 @@ class ViewController: UIViewController {
 extension ViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return flickerModelView.datas.count
+        
+        return flickrModelView.datas.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! FlickerCell
-        cell.data = flickerModelView.datas[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! FlickrCell
+        cell.data = flickrModelView.datas[indexPath.row]
         return cell
     }
 }
@@ -75,11 +73,11 @@ extension ViewController: UICollectionViewDataSource {
 extension ViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return insetCollectionView
+        return flickrModelView.insetCollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let size = CGSize(width: self.view.frame.width - insetCollectionView.left - insetCollectionView.right, height: 240.0)
+        let size = CGSize(width: self.view.frame.width - flickrModelView.insetCollectionView.left - flickrModelView.insetCollectionView.right, height: 240.0)
         return size
     }
     
