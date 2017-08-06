@@ -46,7 +46,7 @@
 		632D91081F369881002E2A2A = {
 			isa = PBXGroup;
 			children = (
-				632D91131F369881002E2A2A /* FlickerPhotoGallery */,
+				632D91131F369881002E2A2A /* FlickrPhotoGallery */,
 				632D91121F369881002E2A2A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -59,7 +59,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		632D91131F369881002E2A2A /* FlickerPhotoGallery */ = {
+		632D91131F369881002E2A2A /* FlickrPhotoGallery */ = {
 			isa = PBXGroup;
 			children = (
 				632D91141F369881002E2A2A /* AppDelegate.swift */,
@@ -73,7 +73,7 @@
 				632D912A1F3714B3002E2A2A /* FlickrCell.swift */,
 				632D912C1F377523002E2A2A /* FlickrAPI.swift */,
 			);
-			path = FlickerPhotoGallery;
+			path = FlickrPhotoGallery;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -92,7 +92,7 @@
 			dependencies = (
 			);
 			name = FlickrPhotoGallery;
-			productName = FlickerPhotoGallery;
+			productName = FlickrPhotoGallery;
 			productReference = 632D91111F369881002E2A2A /* FlickrPhotoGallery.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -276,9 +276,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 2G876RW9RP;
-				INFOPLIST_FILE = FlickerPhotoGallery/Info.plist;
+				INFOPLIST_FILE = FlickrPhotoGallery/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.videokit.FlickerPhotoGallery;
+				PRODUCT_BUNDLE_IDENTIFIER = com.videokit.FlickrPhotoGallery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -289,9 +289,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 2G876RW9RP;
-				INFOPLIST_FILE = FlickerPhotoGallery/Info.plist;
+				INFOPLIST_FILE = FlickrPhotoGallery/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.videokit.FlickerPhotoGallery;
+				PRODUCT_BUNDLE_IDENTIFIER = com.videokit.FlickrPhotoGallery;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
